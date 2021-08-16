@@ -1,25 +1,41 @@
-# Getting Started
+# Strange behavior of CAP with PDF files
 
-Welcome to your new project.
+Clone the project, then ```npm install``` then ```cds deploy --to sqlite```
 
-It contains these folders and files, following our recommended project layout:
+Use file [api.http](api.http) to create initial entities:
 
-File or Folder | Purpose
----------|----------
-`app/` | content for UI frontends goes here
-`db/` | your domain models and data go here
-`srv/` | your service models and code go here
-`package.json` | project metadata and configuration
-`readme.md` | this getting started guide
+POST http://localhost:4004/demo/Directory with
 
+```
+{ "fileName": "Just a file", "fileDescription": "Just a description" }
+```
 
-## Next Steps
+Take the generated ID, then create a media resource:
 
-- Open a new terminal and run `cds watch` 
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start adding content, for example, a [db/schema.cds](db/schema.cds).
+POST http://localhost:4004/demo/Documents with
 
+```
+{ "mimeType": "application/pdf", "directory_ID": "<generated above>", "downloadName": "Test_PDF.pdf" }
+```
 
-## Learn More
+MimeType is used by ```@Core.MediaType``` annotation.
 
-Learn more at https://cap.cloud.sap/docs/get-started/.
+DownloadName is used by ```@Core.ContentDisposition.Filename``` annotation.
+
+Launch the LROP page and within the object page see the "not viewable" message from sap.m.PDFViewer.
+Try to download the PDF via the link in the Object Page header and see the "empty" PDF.
+
+Test via Postman:
+
+http://localhost:4004/demo/Documents('--your--ID--here')/contents 
+
+returns a perfectly viewable PDF.
+
+## Browser Testing
+
+Browser | Display in sap.m.PDFViewer | Download
+--------|----------------------------|---------
+Chrome 92.0.4515.131 | Fails with "The PDF file could not be loaded" message" | Empty PDF
+Edge 92.0.902.73 | Automatically downloads the PDF file and sap.m.PDFViewer "hangs" on busy animation | Empty PDF
+Safari 14.1.2 | as Edge | Empty PDF
+Firefox 89.0 | Automatically downloads the PDF file and sap.m.PDFViewer shows "The PDF file could not be loaded" message | Empty
