@@ -35,7 +35,7 @@ returns a perfectly viewable PDF.
 
 Browser | Display in sap.m.PDFViewer | Download
 --------|----------------------------|---------
-Chrome 92.0.4515.131 | Fails with "The PDF file could not be loaded" message" | Empty PDF
+Chrome 92.0.4515.131 | Fails with "The PDF file could not be loaded" message | Empty PDF
 Edge 92.0.902.73 | Automatically downloads the PDF file and sap.m.PDFViewer "hangs" on busy animation | Empty PDF
 Safari 14.1.2 | as Edge | Empty PDF
-Firefox 89.0 | Automatically downloads the PDF file and sap.m.PDFViewer shows "The PDF file could not be loaded" message | Empty
+Firefox 89.0 | Automatically downloads the PDF file and sap.m.PDFViewer shows "The PDF file could not be loaded" message | Empty PDF
